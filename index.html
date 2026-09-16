@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TietêHQs — Editora Independente de Quadrinhos</title>
+  <meta name="description" content="TietêHQs é uma iniciativa independente de quadrinhos brasileiros. Conheça Brilhô, acompanhe novos projetos e descubra onde ler nossas histórias.">
+  <meta name="keywords" content="TietêHQs, quadrinhos brasileiros, quadrinhos independentes, Brilhô, HQs, Belmiro">
+  <meta name="theme-color" content="#3D1619">
+
+  <meta property="og:title" content="TietêHQs — Editora Independente de Quadrinhos">
+  <meta property="og:description" content="Quadrinhos brasileiros independentes. Conheça as histórias da TietêHQs.">
+  <meta property="og:type" content="website">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tiete: {
+              maroon: '#3D1619',
+              gold: '#C5A028',
+              black: '#121212',
+              white: '#F8F8F8'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Oswald', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+    .comic-shadow { box-shadow: 10px 10px 0 #121212; }
+    .hover-lift:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 14px 14px 0 #C5A028;
+    }
+    .bg-noise {
+      background-image: url("https://www.transparenttextures.com/patterns/p6.png");
+    }
+    .modal { display: none; }
+    .modal.active { display: flex; }
+    .gallery-item img { transition: transform .45s ease; }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .focus-ring:focus-visible {
+      outline: 3px solid #C5A028;
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+
+<body class="bg-tiete-white text-tiete-black font-sans bg-noise selection:bg-tiete-gold selection:text-white">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-tiete-white/95 backdrop-blur-md border-b-2 border-tiete-black px-5 py-4" aria-label="Navegação principal">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="#inicio" class="flex items-center gap-3 focus-ring rounded" aria-label="Voltar ao início">
+        <img src="logo.png" alt="Logo TietêHQs" class="h-12 md:h-14 w-auto">
+        <span class="font-display text-xl uppercase tracking-tighter hidden sm:block">Tietê<span class="text-tiete-gold">HQs</span></span>
+      </a>
+
+      <ul class="hidden xl:flex items-center gap-6 font-display uppercase tracking-widest text-sm font-bold">
+        <li><a href="#quadrinhos" class="hover:text-tiete-gold transition focus-ring rounded">Quadrinhos</a></li>
+        <li><a href="#galeria" class="hover:text-tiete-gold transition focus-ring rounded">Galeria</a></li>
+        <li><a href="#autor" class="hover:text-tiete-gold transition focus-ring rounded">Autor</a></li>
+        <li><a href="#sobre" class="hover:text-tiete-gold transition focus-ring rounded">Sobre</a></li>
+        <li><a href="#onde-ler" class="hover:text-tiete-gold transition focus-ring rounded">Onde Ler</a></li>
+        <li><a href="#apoie" class="bg-tiete-black text-white px-4 py-2 hover:bg-tiete-gold transition focus-ring">Apoie</a></li>
+      </ul>
+
+      <button id="menu-button" type="button" onclick="toggleMenu()" class="xl:hidden p-2 focus-ring rounded" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" class="fixed inset-0 z-[60] bg-tiete-maroon text-white hidden flex-col items-center justify-center gap-7 font-display text-3xl uppercase" aria-hidden="true">
+    <button onclick="toggleMenu()" type="button" class="absolute top-6 right-6 text-xl border-2 border-white px-3 py-2 focus-ring" aria-label="Fechar menu">X</button>
+    <a href="#inicio" onclick="toggleMenu()" class="focus-ring">Início</a>
+    <a href="#quadrinhos" onclick="toggleMenu()" class="focus-ring">Quadrinhos</a>
+    <a href="#galeria" onclick="toggleMenu()" class="focus-ring">Galeria</a>
+    <a href="#autor" onclick="toggleMenu()" class="focus-ring">Autor</a>
+    <a href="#sobre" onclick="toggleMenu()" class="focus-ring">Sobre</a>
+    <a href="#onde-ler" onclick="toggleMenu()" class="focus-ring">Onde Ler</a>
+    <a href="#apoie" onclick="toggleMenu()" class="focus-ring text-tiete-gold">Apoie</a>
+  </div>
+
+  <!-- CARROSSEL -->
+  <div class="relative max-w-5xl mx-auto overflow-hidden border-4 border-tiete-black comic-shadow mt-28 md:mt-32">
+
+    <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
+
+        <div class="min-w-full">
+            <img src="galeria1.jpg" class="w-full h-[500px] object-cover bg-zinc-100" alt="Arte 1">
+        </div>
+
+        <div class="min-w-full">
+            <img src="galeria2.jpg" class="w-full h-[500px] object-cover bg-zinc-100" alt="Arte 2">
+        </div>
+
+        <div class="min-w-full">
+            <img src="galeria3.jpg" class="w-full h-[500px] object-cover bg-zinc-100" alt="Arte 3">
+        </div>
+
+        <div class="min-w-full">
+            <img src="galeria4.jpg" class="w-full h-[500px] object-cover bg-zinc-100" alt="Arte 4">
+        </div>
+
+    </div>
+
+    <!-- ANTERIOR -->
+    <button
+        type="button"
+        onclick="moverCarrossel(-1)"
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-tiete-black text-white w-12 h-12 text-3xl hover:bg-tiete-gold transition">
+        ‹
+    </button>
+
+    <!-- PRÓXIMO -->
+    <button
+        type="button"
+        onclick="moverCarrossel(1)"
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-tiete-black text-white w-12 h-12 text-3xl hover:bg-tiete-gold transition">
+        ›
+    </button>
+
+    <!-- DOTS -->
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+      <button type="button" class="carousel-dot w-3 h-3 rounded-full bg-tiete-gold border border-tiete-black" onclick="irParaSlide(0)"></button>
+      <button type="button" class="carousel-dot w-3 h-3 rounded-full bg-white border border-tiete-black" onclick="irParaSlide(1)"></button>
+      <button type="button" class="carousel-dot w-3 h-3 rounded-full bg-white border border-tiete-black" onclick="irParaSlide(2)"></button>
+      <button type="button" class="carousel-dot w-3 h-3 rounded-full bg-white border border-tiete-black" onclick="irParaSlide(3)"></button>
+    </div>
+
+  </div>
+
+  <!-- HERO -->
+  <header id="inicio" class="pt-16 md:pt-20 pb-20 px-6 border-b-4 border-tiete-black">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-block bg-tiete-gold text-white px-3 py-1 font-display uppercase text-xs tracking-widest mb-5">TietêHQs</div>
+        <h1 class="font-display text-6xl md:text-8xl leading-none uppercase mb-6 italic">
+          Quadrinhos<br><span class="text-tiete-maroon">Independentes.</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-10 max-w-xl leading-relaxed font-light">
+          Histórias originais criadas para o público brasileiro. Conheça o universo da TietêHQs e acompanhe o desenvolvimento de <span class="font-bold border-b-2 border-tiete-gold">Brilhô</span>.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#quadrinhos" class="bg-tiete-black text-white font-display uppercase tracking-widest px-7 py-4 comic-shadow hover:bg-tiete-maroon transition focus-ring">
+            Conheça Brilhô →
+          </a>
+          <a href="https://karikari.app/perfil/tiete-h-q" target="_blank" rel="noopener noreferrer" class="border-2 border-tiete-black font-display uppercase tracking-widest px-7 py-4 hover:bg-tiete-gold hover:text-white transition focus-ring">
+            Ler gratuitamente
+          </a>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="aspect-square bg-zinc-200 border-4 border-tiete-black comic-shadow overflow-hidden group">
+          <img src="brilho-capa.jpg" alt="Capa de Brilhô" class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="absolute -bottom-5 -left-4 bg-tiete-gold text-white px-5 py-3 font-display uppercase tracking-widest border-2 border-tiete-black">
+          Obra em destaque
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- QUADRINHOS -->
+  <section id="quadrinhos" class="py-24 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 gap-5">
+        <div>
+          <p class="font-display uppercase tracking-[0.3em] text-tiete-gold text-sm mb-3">Universos da Tietê</p>
+          <h2 class="font-display text-5xl md:text-7xl uppercase italic border-l-8 border-tiete-gold pl-6">Quadrinhos</h2>
+        </div>
+        <a href="#onde-ler" class="font-display text-lg uppercase tracking-widest hover:text-tiete-gold transition focus-ring">
+          Onde ler →
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <!-- BRILHÔ -->
+        <article class="group">
+          <div class="aspect-[3/4] bg-zinc-100 border-4 border-tiete-black comic-shadow mb-6 overflow-hidden hover-lift transition-all relative">
+            <img src="brilho-capa.jpg" alt="Capa de Brilhô" class="w-full h-full object-cover">
+            <div class="absolute top-4 left-4 bg-tiete-gold text-white px-3 py-1 font-display uppercase text-xs tracking-widest border-2 border-tiete-black">
+              Destaque
+            </div>
+          </div>
+          <h3 class="font-display text-4xl uppercase text-tiete-maroon italic">Brilhô</h3>
+          <p class="text-xs font-bold text-tiete-gold uppercase tracking-[0.2em] mb-4">Cyberpunk • Futurismo</p>
+          <p class="text-sm text-zinc-600 leading-relaxed italic mb-6">
+            Num futuro dominado pela tecnologia, um jovem sem escolhas acaba caindo em um obscuro nicho ilegal de sabotagem corporativa.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="#brilho-detalhes" class="font-bold text-sm border-b-2 border-tiete-black hover:text-tiete-gold hover:border-tiete-gold transition focus-ring">
+              CONHECER OBRA
+            </a>
+            <a href="https://karikari.app/perfil/tiete-h-q" target="_blank" rel="noopener noreferrer" class="font-bold text-sm border-b-2 border-tiete-gold text-tiete-maroon hover:text-tiete-gold transition focus-ring">
+              LER NA KIRAKARI
+            </a>
+          </div>
+        </article>
+
+        <!-- BOCA D'ORO -->
+        <article class="opacity-80">
+          <div class="aspect-[3/4] bg-zinc-100 border-2 border-dashed border-zinc-400 mb-6 flex items-center justify-center relative overflow-hidden">
+            <div class="text-center px-8">
+              <span class="font-display text-zinc-400 uppercase tracking-widest italic text-2xl">Em Breve</span>
+              <p class="text-xs text-zinc-400 uppercase tracking-widest mt-3">Projeto em desenvolvimento</p>
+            </div>
+          </div>
+          <h3 class="font-display text-3xl uppercase text-zinc-400 italic">Boca D'Oro</h3>
+          <p class="text-xs font-bold text-zinc-400 uppercase tracking-[0.2em] mt-2">Projeto em desenvolvimento</p>
+        </article>
+      </div>
+
+      <!-- DETALHES BRILHÔ -->
+      <div id="brilho-detalhes" class="mt-24 grid lg:grid-cols-2 gap-10 items-center scroll-mt-28">
+        <div class="border-4 border-tiete-black bg-tiete-maroon text-white p-8 md:p-12 comic-shadow">
+          <p class="font-display text-tiete-gold uppercase tracking-[0.25em] text-sm mb-4">Conheça a obra</p>
+          <h3 class="font-display text-5xl md:text-6xl uppercase italic mb-6">Brilhô</h3>
+          <p class="text-zinc-200 leading-relaxed mb-6">
+            Brilhô é o principal projeto apresentado pela TietêHQs, com uma ambientação marcada por tecnologia, trabalho e conflitos urbanos.
+          </p>
+          <p class="text-zinc-300 leading-relaxed text-sm">
+            A obra ainda está em desenvolvimento. Novas informações, capítulos e materiais serão adicionados à medida que forem finalizados.
+          </p>
+        </div>
+
+        <div class="border-4 border-tiete-black p-8 bg-tiete-white">
+          <p class="font-display uppercase tracking-widest text-tiete-gold text-sm mb-5">Status</p>
+          <div class="flex items-center gap-3 mb-8">
+            <span class="w-3 h-3 bg-tiete-gold rounded-full"></span>
+            <span class="font-display uppercase text-2xl">Em desenvolvimento</span>
+          </div>
+          <a href="https://karikari.app/perfil/tiete-h-q" target="_blank" rel="noopener noreferrer" class="inline-block bg-tiete-black text-white font-display uppercase tracking-widest px-7 py-4 hover:bg-tiete-gold transition focus-ring">
+            Acessar KiraKari →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ONDE LER -->
+  <section id="onde-ler" class="py-24 px-6 bg-tiete-maroon text-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="max-w-3xl mb-14">
+        <p class="font-display uppercase tracking-[0.3em] text-tiete-gold text-sm mb-3">Distribuição digital</p>
+        <h2 class="font-display text-5xl md:text-7xl uppercase italic">Onde Ler</h2>
+        <p class="text-lg text-zinc-300 leading-relaxed mt-6">
+          A TietêHQs utiliza plataformas digitais para aproximar suas histórias dos leitores. Os links abaixo levam aos espaços oficiais da editora.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <article class="bg-tiete-black border-2 border-tiete-gold p-8 hover:-translate-y-1 transition">
+          <p class="font-display text-tiete-gold uppercase tracking-widest text-sm mb-3">Plataforma oficial</p>
+          <h3 class="font-display text-4xl uppercase italic mb-4">KiraKari</h3>
+          <p class="text-zinc-300 mb-7">Leia gratuitamente os quadrinhos disponíveis da TietêHQs.</p>
+          <a href="https://karikari.app/perfil/tiete-h-q" target="_blank" rel="noopener noreferrer" class="inline-block bg-tiete-gold text-white px-6 py-3 font-display uppercase tracking-widest hover:bg-white hover:text-tiete-black transition focus-ring">
+            Acessar KiraKari →
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section id="galeria" class="py-24 px-6 bg-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between md:items-end gap-5 mb-14">
+        <div>
+          <p class="font-display uppercase tracking-[0.3em] text-tiete-gold text-sm mb-3">Visual da Tietê</p>
+          <h2 class="font-display text-5xl md:text-7xl uppercase italic border-l-8 border-tiete-gold pl-6">Galeria</h2>
+        </div>
+        <p class="text-sm text-zinc-500 max-w-md">Um espaço para capas, personagens e artes . Novas imagens podem ser adicionadas conforme o projeto avança.</p>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+        <button class="gallery-item aspect-square border-4 border-tiete-black overflow-hidden bg-zinc-100 text-left focus-ring" onclick="openImage('brilho-capa.jpg','Brilhô — capa')" aria-label="Ampliar capa de Brilhô">
+          <img src="brilho-capa.jpg" alt="Brilhô — capa" class="w-full h-full object-cover">
+        </button>
+
+        <div class="aspect-square border-2 border-dashed border-zinc-400 bg-zinc-100 flex flex-col items-center justify-center text-center p-5">
+          <span class="font-display text-zinc-400 uppercase text-xl italic">Personagens</span>
+          <span class="text-[10px] uppercase tracking-widest text-zinc-400 mt-2">Em breve</span>
+        </div>
+
+        <div class="aspect-square border-2 border-dashed border-zinc-400 bg-zinc-100 flex flex-col items-center justify-center text-center p-5">
+          <span class="font-display text-zinc-400 uppercase text-xl italic">Arte</span>
+          <span class="text-[10px] uppercase tracking-widest text-zinc-400 mt-2">Em breve</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div id="image-modal" class="modal fixed inset-0 z-[100] bg-black/90 items-center justify-center p-5" role="dialog" aria-modal="true" aria-label="Visualização de imagem">
+    <button onclick="closeImage()" type="button" class="absolute top-5 right-5 bg-white text-black border-2 border-black px-4 py-2 font-bold focus-ring">FECHAR [X]</button>
+    <div class="max-w-5xl max-h-[90vh] text-center">
+      <img id="lightbox-image" src="" alt="" class="max-h-[78vh] max-w-full object-contain mx-auto border-4 border-white">
+      <p id="lightbox-caption" class="text-white font-display uppercase tracking-widest mt-4"></p>
+    </div>
+  </div>
+
+  <!-- AUTOR -->
+  <section id="autor" class="py-24 px-6 bg-tiete-black text-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
+      <div class="md:w-1/3 w-full">
+        <div class="aspect-square rounded-full border-4 border-tiete-gold p-4 overflow-hidden bg-zinc-900 comic-shadow">
+          <div class="w-full h-full flex items-center justify-center text-tiete-gold font-display text-8xl italic" aria-label="Representação de Belmiro">B</div>
+        </div>
+      </div>
+
+      <div class="md:w-2/3">
+        <p class="font-display uppercase tracking-[0.3em] text-tiete-gold text-sm mb-3">Criador</p>
+        <h2 class="font-display text-5xl md:text-7xl uppercase italic text-tiete-gold mb-4">Belmiro</h2>
+        <p class="text-xl font-display uppercase tracking-widest text-zinc-500 mb-8 italic">Autor &amp; Roteirista</p>
+        <p class="text-lg leading-relaxed font-light text-zinc-300 max-w-2xl">
+          Samuel Belmiro é o criador e roteirista da TietêHQs. O projeto reúne histórias originais e uma proposta independente de produção e divulgação de quadrinhos brasileiros.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="py-24 px-6 bg-white scroll-mt-20">
+    <div class="max-w-5xl mx-auto">
+      <p class="font-display uppercase tracking-[0.3em] text-tiete-gold text-sm mb-3">A TietêHQs</p>
+      <h2 class="font-display text-5xl md:text-7xl uppercase italic border-l-8 border-tiete-gold pl-6 mb-10">Quem Somos</h2>
+
+      <div class="grid md:grid-cols-2 gap-10">
+        <div>
+          <p class="text-xl leading-relaxed mb-6">
+            A TietêHQs é uma iniciativa independente dedicada à criação e divulgação de histórias em quadrinhos brasileiras.
+          </p>
+          <p class="text-zinc-600 leading-relaxed">
+            A proposta é desenvolver histórias originais e disponibilizá-las principalmente em formato digital, aproximando os projetos de leitores por meio de plataformas e redes sociais.
+          </p>
+        </div>
+
+        <div class="border-4 border-tiete-black p-8 comic-shadow">
+          <p class="font-display uppercase tracking-widest text-tiete-gold text-sm mb-4">Nossa proposta</p>
+          <ul class="space-y-4 font-display uppercase text-lg italic">
+            <li>• Criar histórias originais</li>
+            <li>• Valorizar a produção independente</li>
+            <li>• Construir novos universos e personagens</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APOIE -->
+  <section id="apoie" class="py-24 px-6 bg-tiete-gold text-tiete-black scroll-mt-20">
+    <div class="bg-white p-4 inline-block border-4 border-tiete-black mb-6">
+        <img 
+            src="pix-qrcode.png" 
+            alt="QR Code para apoiar a TietêHQs via PIX"
+            class="w-56 h-56 object-contain"
+        >
+    </div>
+    <div class="bg-tiete-black text-white p-8 md:p-12 comic-shadow inline-block w-full max-w-md">
+
+      <p class="font-display text-2xl uppercase mb-4 tracking-widest">
+          Apoio via PIX
+      </p>
+
+      <div class="bg-zinc-800 p-4 font-mono text-lg md:text-xl border-2 border-tiete-gold mb-4 break-all">
+      1f5aca2b-baa4-4734-b05b-0217d47cb38f
+      </div>
+
+      <button
+          onclick="copiarPix()"
+          id="copy-pix"
+          class="w-full bg-tiete-gold text-tiete-black font-display uppercase tracking-widest font-bold px-6 py-4 hover:bg-white transition"
+      >
+          📋 COPIAR CHAVE PIX
+      </button>
+
+      <p id="pix-status" class="text-xs uppercase mt-3 opacity-70">
+          Clique para copiar a chave
+      </p>
+
+    </div>
+
+    <p id="copy-status" class="text-xs uppercase tracking-widest text-tiete-gold mt-4 min-h-4" aria-live="polite"></p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-tiete-white pt-20 pb-10 px-6 border-t-4 border-tiete-black">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+      <div class="md:col-span-2">
+        <img src="logo.png" alt="Logo TietêHQs" class="h-20 w-auto mb-7">
+        <p class="font-display text-2xl uppercase italic opacity-40 leading-none">Quadrinhos Brasileiros.<br>Histórias Originais.</p>
+      </div>
+
+      <div>
+        <h5 class="font-display uppercase text-xs tracking-widest text-tiete-gold mb-6">Navegação</h5>
+        <ul class="space-y-3 font-display uppercase text-sm italic">
+          <li><a href="#quadrinhos" class="hover:text-tiete-gold focus-ring">Quadrinhos</a></li>
+          <li><a href="#galeria" class="hover:text-tiete-gold focus-ring">Galeria</a></li>
+          <li><a href="" class="hover:text-tiete-gold focus-ring">Novidades</a></li>
+          <li><a href="#sobre" class="hover:text-tiete-gold focus-ring">Sobre</a></li>
+          <li><a href="#onde-ler" class="hover:text-tiete-gold focus-ring">Onde Ler</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-display uppercase text-xs tracking-widest text-tiete-gold mb-6">Links Oficiais</h5>
+        <ul class="space-y-3 font-display uppercase text-sm italic">
+          <li><a href="https://karikari.app/perfil/tiete-h-q" target="_blank" rel="noopener noreferrer" class="hover:text-tiete-gold focus-ring">KiraKari</a></li>
+          <li><a href="https://www.instagram.com/tiete_historias_e_quadrinhos/" target="_blank" rel="noopener noreferrer" class="hover:text-tiete-gold focus-ring">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/@tiet.histrias.qua" target="_blank" rel="noopener noreferrer" class="hover:text-tiete-gold focus-ring">TikTok</a></li>
+          <li><a href="mailto:tietehistoriasequadrinhos@gmail.com" class="hover:text-tiete-gold focus-ring break-all">E-mail</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto border-t border-zinc-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.25em] text-zinc-400">
+      <p>© 2026 TietêHQs. Todos os direitos reservados.</p>
+      <div class="flex gap-6">
+        <button onclick="openLegal('terms')" type="button" class="hover:text-tiete-black focus-ring">Termos de Uso</button>
+        <button onclick="openLegal('privacy')" type="button" class="hover:text-tiete-black focus-ring">Privacidade</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LEGAL MODAL -->
+  <div id="legal-modal" class="modal fixed inset-0 z-[110] bg-black/80 items-center justify-center p-5 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div class="bg-white w-full max-w-4xl max-h-[82vh] overflow-y-auto p-7 md:p-10 relative border-4 border-tiete-black comic-shadow">
+      <button onclick="closeLegal()" type="button" class="sticky top-0 float-right bg-white border-2 border-black px-4 py-2 font-bold hover:bg-tiete-gold hover:text-white transition focus-ring">
+        FECHAR [X]
+      </button>
+      <div id="legal-content" class="clear-both pt-6 text-zinc-800"></div>
+    </div>
+  </div>
+
+  <script>
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuButton = document.getElementById('menu-button');
+
+    function toggleMenu() {
+      const isOpen = mobileMenu.classList.contains('flex');
+      mobileMenu.classList.toggle('hidden', isOpen);
+      mobileMenu.classList.toggle('flex', !isOpen);
+      mobileMenu.setAttribute('aria-hidden', String(isOpen));
+      menuButton.setAttribute('aria-expanded', String(!isOpen));
+      document.body.style.overflow = isOpen ? '' : 'hidden';
+    }
+
+    function openImage(src, caption) {
+      document.getElementById('lightbox-image').src = src;
+      document.getElementById('lightbox-image').alt = caption;
+      document.getElementById('lightbox-caption').textContent = caption;
+      document.getElementById('image-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImage() {
+      document.getElementById('image-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    const legalTexts = {
+      terms: `
+        <h1 class="font-display uppercase text-4xl mb-3 italic text-tiete-maroon">Termos de Uso</h1>
+        <p class="text-xs mb-8 uppercase font-bold text-tiete-gold">Atualizado em 16 de setembro de 2026</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">1. Conteúdo e propriedade intelectual</h2>
+        <p>Os textos, imagens, personagens, logotipos e quadrinhos apresentados neste site pertencem aos respectivos titulares e são protegidos pela legislação aplicável. O conteúdo não pode ser reproduzido ou explorado comercialmente sem autorização.</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">2. Uso do site</h2>
+        <p>O visitante pode navegar e utilizar o conteúdo para fins pessoais e informativos. Não é permitido copiar, redistribuir, modificar ou utilizar os materiais da TietêHQs para fins comerciais sem autorização.</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">3. Links externos</h2>
+        <p>O site pode direcionar para plataformas e redes sociais de terceiros. Esses serviços possuem seus próprios termos, políticas e práticas de privacidade. A TietêHQs não controla o funcionamento desses serviços.</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">4. Contato</h2>
+        <p>Para dúvidas, solicitações ou autorizações relacionadas ao conteúdo, entre em contato pelo e-mail tietehistoriasequadrinhos@gmail.com.</p>
+      `,
+      privacy: `
+        <h1 class="font-display uppercase text-4xl mb-3 italic text-tiete-maroon">Política de Privacidade</h1>
+        <p class="text-xs mb-8 uppercase font-bold text-tiete-gold">Atualizado em 16 de setembro de 2026</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">1. Dados pessoais</h2>
+        <p>Este site não possui, atualmente, cadastro de usuários, área de login ou formulário próprio para coleta de dados pessoais.</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">2. Serviços externos</h2>
+        <p>O site utiliza recursos externos, como serviços de hospedagem de fontes e a biblioteca Tailwind CSS por CDN. Ao acessar links para KiraKari, Instagram ou TikTok, o visitante passa a utilizar serviços sujeitos às políticas de privacidade dessas plataformas.</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">3. Cookies e tecnologias semelhantes</h2>
+        <p>O código desta página não implementa, por conta própria, sistema de cadastro ou rastreamento de usuários. Serviços externos incorporados ou acessados pelo visitante podem utilizar suas próprias tecnologias, conforme suas políticas.</p>
+        <h2 class="font-bold mt-6 mb-2 uppercase">4. Contato</h2>
+        <p>Para questões relacionadas à privacidade, entre em contato pelo e-mail tietehistoriasequadrinhos@gmail.com.</p>
+      `
+    };
+
+    function openLegal(type) {
+      document.getElementById('legal-content').innerHTML = legalTexts[type];
+      document.getElementById('legal-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLegal() {
+      document.getElementById('legal-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('image-modal').addEventListener('click', (event) => {
+      if (event.target.id === 'image-modal') closeImage();
+    });
+
+    document.getElementById('legal-modal').addEventListener('click', (event) => {
+      if (event.target.id === 'legal-modal') closeLegal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeImage();
+        closeLegal();
+        if (mobileMenu.classList.contains('flex')) toggleMenu();
+      }
+    });
+
+    function copiarPix() {
+        const chavePix = "1f5aca2b-baa4-4734-b05b-0217d47cb38f";
+        const status = document.getElementById("pix-status");
+        const botao = document.getElementById("copy-pix");
+
+        navigator.clipboard.writeText(chavePix).then(() => {
+            botao.innerText = "✓ CHAVE COPIADA!";
+            status.innerText = "Agora é só colar no aplicativo do seu banco.";
+
+            setTimeout(() => {
+                botao.innerText = "📋 COPIAR CHAVE PIX";
+                status.innerText = "Clique para copiar a chave";
+            }, 3000);
+        }).catch(() => {
+            status.innerText = "Não foi possível copiar automaticamente.";
+        });
+    }
+
+    // CARROSSEL
+    let slideAtual = 0;
+    let autoplayInterval;
+    const carousel = document.getElementById("carousel");
+    const totalSlides = carousel.children.length;
+    const dots = document.querySelectorAll(".carousel-dot");
+
+    function atualizarDots() {
+        dots.forEach((dot, i) => {
+            if (i === slideAtual) {
+                dot.classList.remove("bg-white");
+                dot.classList.add("bg-tiete-gold");
+            } else {
+                dot.classList.remove("bg-tiete-gold");
+                dot.classList.add("bg-white");
+            }
+        });
+    }
+
+    function irParaSlide(indice) {
+        slideAtual = indice;
+        if (slideAtual >= totalSlides) slideAtual = 0;
+        if (slideAtual < 0) slideAtual = totalSlides - 1;
+        carousel.style.transform = "translateX(-" + (slideAtual * 100) + "%)";
+        atualizarDots();
+    }
+
+    function moverCarrossel(direcao) {
+        irParaSlide(slideAtual + direcao);
+    }
+
+    function iniciarAutoplay() {
+        autoplayInterval = setInterval(() => moverCarrossel(1), 4000);
+    }
+
+    function pararAutoplay() {
+        clearInterval(autoplayInterval);
+    }
+
+    carousel.parentElement.addEventListener("mouseenter", pararAutoplay);
+    carousel.parentElement.addEventListener("mouseleave", iniciarAutoplay);
+
+    let startX = 0;
+    carousel.parentElement.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+        pararAutoplay();
+    });
+    carousel.parentElement.addEventListener("touchend", (e) => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) moverCarrossel(diff > 0 ? 1 : -1);
+        iniciarAutoplay();
+    });
+
+    atualizarDots();
+    iniciarAutoplay();
+  </script>
+</body>
+</html>
